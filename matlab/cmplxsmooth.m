@@ -1,6 +1,6 @@
 function [Hoct]=cmplxsmooth(H,Noct)
 
-fs=44100;
+fs=96000;
 freq=(0:fs/(length(H)-1):fs/2)';
 Noct=2*Noct;
 H=H(1:end/2,:);
@@ -9,7 +9,7 @@ Noct=2*Noct;
 % octave center frequencies
 f1=1;
 i=0;
-while f1 < 22050
+while f1 < 48000
     f1=f1*10^(3/(10*Noct));
     i=i+1;
     fc(i,:)=f1;

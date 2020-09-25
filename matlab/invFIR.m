@@ -1,4 +1,4 @@
-function [ih]=invFIR(type,h,Nfft,Noct,L,range,reg,window)
+function [ih]=invFIR(type,h,Nfft,Noct,L,range,reg,window, fs)
 
 % ------------------------------------------------------------------------------ 
 % description: design inverse filter (FIR) from mono or stereo impulse response
@@ -38,9 +38,11 @@ function [ih]=invFIR(type,h,Nfft,Noct,L,range,reg,window)
 % Making use of the DFT sets |z|=1 and that means taht the region of convergence now includes the unit circle.
 % Now the inverse filter is stable but non-causal (left handed part of response towards negative times).
 % To compensate this, the resulting response is shifted in time to make the non-causal part causal.
+
 % But the "true" inverse is still an infinite one but is represented by an finite (Nfft-long) approximation.
 % Due to this fact and due to the periodic nature of the DFT, the Nfft-long "snapshot" of the true invese also contains 
 % overlapping components from adjacents periodic repetitions (=> "time aliasing").
+
 % Windowing the resulting response helps to suppress aliasing at the edges but does not guarantee that the complete response is aliasing-free.
 % In fact inverting non-minimum phase responses will always cause time aliasing - the question is not "if at all" but "to which amount".
 % Time-aliasing "limiters":
@@ -56,7 +58,6 @@ function [ih]=invFIR(type,h,Nfft,Noct,L,range,reg,window)
 % ----------------------------------------------------------------
 
 
-fs=44100;
 f1=range(1);
 f2=range(2);
 reg_in=reg(1);
@@ -82,7 +83,7 @@ if f1 > 0 && f2 < fs/2
         f2e=f2+1;
     end
     % regularization B with 1/3 octave interpolated transient edges 
-    B=interp1([0 f1e f1 f2 f2e freq(end)],[reg_out reg_out reg_in reg_in reg_out reg_out],freq,'cubic');
+    B=interp1([0 f1e f1 f2 f2e freq(end)],[reg_out reg_out reg_in reg_in reg_out reg_out],freq,'PCHIP');
     B=10.^(-B./20); % from dB to linear
     B=vertcat(B,B(end:-1:1)); 
     b=ifft(B,'symmetric');
