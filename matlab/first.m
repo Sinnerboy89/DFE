@@ -40,7 +40,7 @@ inverse_l = invFIR('linphase', avg_ir_l, N, 3, N, [20 20000], [15 20], 1, Fs);
 % QC: combine DFIR with inverse and check FR is "flat"
 hold on;
 inverse_tf_l = fft(inverse_l, N);
-semilogx(F(1:N/2), 10*log10(inverse_tf_l(1:N/2)));
+semilogx(F(1:N/2), 10*log10(abs(inverse_tf_l(1:N/2))));
 flat_ir_l = conv(avg_ir_l, inverse_l, 'same');
 flat_tf_l = fft(flat_ir_l, N);
-semilogx(F(1:N/2), 10*log10(flat_tf_l(1:N/2)));
+semilogx(F(1:N/2), 10*log10(abs(flat_tf_l(1:N/2))));

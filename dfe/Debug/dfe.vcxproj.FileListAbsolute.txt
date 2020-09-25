@@ -1,0 +1,2 @@
+C:\projects\DFE\dfe\Debug\dfe.exe
+C:\projects\DFE\dfe\Debug\dfe.pdb
