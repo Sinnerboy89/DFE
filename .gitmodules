@@ -1,3 +1,9 @@
 [submodule "dfe/CubicSpline"]
 	path = dfe/CubicSpline
 	url = https://github.com/josnidhin/CubicSpline.git
+[submodule "dfe/include/AudioFile"]
+	path = dfe/include/AudioFile
+	url = https://github.com/adamstark/AudioFile.git
+[submodule "dfe/include/Simple-FFT"]
+	path = dfe/include/Simple-FFT
+	url = https://github.com/d1vanov/Simple-FFT.git
