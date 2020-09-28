@@ -1,2 +1,0 @@
-C:\projects\DFE\dfe\x64\Debug\dfe.exe
-C:\projects\DFE\dfe\x64\Debug\dfe.pdb
