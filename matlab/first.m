@@ -28,7 +28,7 @@ semilogx(F(1:N/2), 10*log10(avg_mag(1:N/2)));
 % convert avg mag response to IR
 avg_ir = circshift(real(ifft(avg_mag)), N/2);
 
-% separate channels and normalise
+% separate channels
 avg_ir_l = avg_ir(:,1); 
 
 % normalise?

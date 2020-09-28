@@ -1,2 +1,6 @@
-﻿  dfe.cpp
+﻿  HRIR_set.cpp
+  Kirkeby_Inverter.cpp
+  main.cpp
+  misc_utils.cpp
+  Generating Code...
   dfe.vcxproj -> C:\projects\DFE\dfe\x64\Debug\dfe.exe
