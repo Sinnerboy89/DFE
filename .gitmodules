@@ -1,6 +1,3 @@
-[submodule "CubicSpline"]
-	path = CubicSpline
-	url = https://github.com/josnidhin/CubicSpline.git
 [submodule "dfe/CubicSpline"]
 	path = dfe/CubicSpline
 	url = https://github.com/josnidhin/CubicSpline.git
