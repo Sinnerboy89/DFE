@@ -4,6 +4,8 @@ Coding challenge involving Diffuse Field Equalisation of HRTF databases (descrip
 
 "When recording an HRTF Set we use speakers and in-ear microphones in an anechoic chamber. These have spectral characteristics that we would like to remove from the HRTF Set. An HRTF Set is 2 collections (Left and Right) of HRTFs distributed in a sphere around the listener. For simplicity, assume each HRTF is a 512 bin array of complex numbers describing magnitude (real) and phase (imaginary). In C or C++ create functionality to remove the common spectral characteristics of the HRTF set, hence removing the spectral characteristics of the recording apparatus. Imagine this code would be submitted for review and used within a publicly available HRTF post-processing chain. This process is commonly known as diffuse field equalisation."
 
+![Plot](plot_dfe.png)
+
 # Usage
 `dfe.exe {input_dir} {output_dir}`
 
