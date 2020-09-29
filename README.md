@@ -8,6 +8,7 @@ Coding challenge involving Diffuse Field Equalisation of HRTF databases (descrip
 `dfe.exe {input_dir} {output_dir}`
 
 WARNING: Depending on how many IR wav files are in your input directory, this may well completely lock up your disk I/O (even my SSD started to sweat a bit when testing with the Neumann set from SADIE II).
+
 WARNING: This hasn't been tested on another machine yet, but my guess is that it's going to look for Python 3 with numpy and matplotlib packages, and crash if it doesn't find them. Puzzlingly these are required for plotting only, but a memory-related bug means that the main routine is now somehow dependent on them completely!
 
 # Developer Notes
