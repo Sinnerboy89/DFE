@@ -116,9 +116,9 @@ static int findNearestNeighbourIndex(float value, std::vector<float>& x)
     return idx;
 }
 
-vector<float> interp1(vector<float>& x, vector<float>& y, vector<float>& x_new)
+std::vector<float> interp1(std::vector<float>& x, std::vector<float>& y, std::vector<float>& x_new)
 {
-    vector<float> y_new;
+    std::vector<float> y_new;
 
     std::vector<float> dx, dy, slope, intercept;
     dx.reserve(x.size());

@@ -65,7 +65,7 @@ void LinearConvolution(double X[], double Y[], double Z[], int lenx, int leny);
 void plot_dfe_mr(ComplexArray1D& avg_mr, ComplexArray1D inv_mr, ComplexArray1D combo);
 
 // simple interpolation (adapted from https://stackoverflow.com/questions/9394867/c-implementation-of-matlab-interp1-function-linear-interpolation)
-vector<float> interp1(vector<float>& x, vector<float>& y, vector<float>& x_new);
+std::vector<float> interp1(std::vector<float>& x, std::vector<float>& y, std::vector<float>& x_new);
 
 // assumes data comes from SADIE II, with their naming convention
 class HRIR_set {
