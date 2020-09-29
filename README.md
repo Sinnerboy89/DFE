@@ -12,17 +12,23 @@ WARNING: Depending on how many IR wav files are in your input directory, this ma
 # Developer Notes
 
 ## Building from Source
-Open solution in VS 2019 and build.
+
+### Requirements
+* Visual Studio 2019 (may work on older versions, but not tested)
+* Python 3 (for matplotlib-cpp)
+* numpy (open a command window and enter `pip install numpy` - precede this with `{python_exe_path} -m` if not already in your $PATH)
+
+Open solution in VS 2019. Check that your Python and numpy core include paths are in Additional Include Directories and correct (mine is `C:\Python38\include`, `C:\Python38\Lib\site-packages\numpy\core\include`), along with library path for linker in Additional Library Directories (mine is `C:\Python38\libs`) and build in Release (Debug will fail as both Python and numpy package need to be compiled in Debug, which you're not gonna do). Any compiler warnings are only expected to originate from matplotlib-cpp library.
 
 ## Commentary
 Performance? Footprint? Readability? Features? Compatibility?
 
 ## Third-party Dependencies
-SimpleFFT: Could easily be replaced by your favourite optimised FFT library (FFTW, FFTS, KISS_FFT etc.) but all I wanted was a simple header-only library for readability and minimal boilerplate.
+AudioFile: https://github.com/adamstark/AudioFile Handy little WAV read/write library, this had exactly what I needed and nothing more to deal with HRIR I/O (at least, in the SADIE II database).
 
-CublicSpline: Again, a simple but easy to use interpolation library to deal with smoothing and regularisation within the Kirkeby inversion routine. Boost would probably kick this library's ass, but again all I needed was simplicity.
+SimpleFFT: https://github.com/d1vanov/Simple-FFT Could easily be replaced by your favourite optimised FFT library (FFTW, FFTS, KISS_FFT etc.) but all I wanted was a simple header-only library for readability and minimal boilerplate.
 
-AudioFile: Handy little WAV read/write library, this had exactly what I needed and nothing more to deal with HRIR I/O (at least, in the SADIE II database).
+matplotlib-cpp: https://github.com/lava/matplotlib-cpp "Welcome to matplotlib-cpp, possibly the simplest C++ plotting library. It is built to resemble the plotting API used by Matlab and matplotlib." - toots its own horn a bit, as it required a bit of hacking to get going in VS 2019 - but lets me go into Python prototyping mode a little more with its mirroring of matplotlib.pyplot module (one of the best scientific plotting libraries available).
 
 ## To-Do
 
