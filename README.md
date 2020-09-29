@@ -8,6 +8,7 @@ Coding challenge involving Diffuse Field Equalisation of HRTF databases:
 `dfe.exe {input_dir} {output_dir}`
 
 WARNING: Depending on how many IR wav files are in your input directory, this may well completely lock up your disk I/O (even my SSD started to sweat a bit when testing with the Neumann set from SADIE II).
+WARNING: This hasn't been tested on another machine yet, but my guess is that it's going to look for Python 3 with numpy and matplotlib packages, and crash if it doesn't find them. Puzzlingly these are required for plotting only, but a memory-related bug means that the main routine is now somehow dependent on them completely!
 
 # Developer Notes
 
@@ -16,7 +17,8 @@ WARNING: Depending on how many IR wav files are in your input directory, this ma
 ### Requirements
 * Visual Studio 2019 (may work on older versions, but not tested)
 * Python 3 (for matplotlib-cpp)
-* numpy (open a command window and enter `pip install numpy` - precede this with `{python_exe_path} -m` if not already in your $PATH)
+* numpy python package (open a command window and enter `pip install numpy` - precede this with `{python_exe_path} -m` if not already in your $PATH)
+* matplotlib python package
 
 Open solution in VS 2019. Check that your Python and numpy core include paths are in Additional Include Directories and correct (mine is `C:\Python38\include`, `C:\Python38\Lib\site-packages\numpy\core\include`), along with library path for linker in Additional Library Directories (mine is `C:\Python38\libs`) and build in Release (Debug will fail as both Python and numpy package need to be compiled in Debug, which you're not gonna do). Any compiler warnings are only expected to originate from matplotlib-cpp library.
 
