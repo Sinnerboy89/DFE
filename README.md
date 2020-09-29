@@ -8,8 +8,7 @@ Coding challenge involving Diffuse Field Equalisation of HRTF databases:
 `dfe.exe {input_dir} {output_dir}`
 
 WARNING: Depending on how many IR wav files are in your input directory, this may well completely lock up your disk I/O (even my SSD started to sweat a bit when testing with the Neumann set from SADIE II).
-
-If you're feeling adventurous, and have Python 3 installed on your system (with numpy and matplotlib packages), then you can try `dfe_plot.exe` with same args; this program is identical to the above, but a pretty little plot PNG will appear in your working directory which should illustrate the inverse-filtering "cancelling out" direction-independent features in your IR set.
+WARNING: This hasn't been tested on another machine yet, but my guess is that it's going to look for Python 3 with numpy and matplotlib packages, and crash if it doesn't find them. Puzzlingly these are required for plotting only, but a memory-related bug means that the main routine is now somehow dependent on them completely!
 
 # Developer Notes
 
