@@ -81,6 +81,7 @@ ComplexArray1D vectorMultiplication(ComplexArray1D &v1, ComplexArray1D &v2)
     return result;
 }
 
+#ifdef USE_PYTHON
 void plot_dfe_mr(ComplexArray1D& avg_mr, ComplexArray1D inv_mr, ComplexArray1D combo) {
 
     float bin = 22050.0f / 128.0f;
@@ -100,6 +101,7 @@ void plot_dfe_mr(ComplexArray1D& avg_mr, ComplexArray1D inv_mr, ComplexArray1D c
     plt::legend();
     plt::save("./plot_dfe.png");
 }
+#endif // USE_PYTHON
 
 static int findNearestNeighbourIndex(float value, std::vector<float>& x)
 {

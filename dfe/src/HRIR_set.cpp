@@ -19,7 +19,7 @@ void HRIR_set::sample_36x12() {
     _azi_len = azi_locs.size();
     _ele_len = ele_locs.size();
 	_total = _azi_len * _ele_len;
-	_N = 256; // TODO: determine N from example loaded IR
+	_N = 256; // SADIE II test input has this TODO: determine N from example loaded IR
 }
 
 void HRIR_set::calc_avg_mag(ComplexArray1D &avg_mag_l, ComplexArray1D &avg_mag_r) {
@@ -38,6 +38,7 @@ void HRIR_set::calc_avg_mag(ComplexArray1D &avg_mag_l, ComplexArray1D &avg_mag_r
     std::string ir_path;
     bool status_l, status_r;
 
+    // calculate power spectra and accumulate (variable naming readability slightly sacrificed for in-place stack recycling!)
     for (auto el = 0; el < _ele_len; el++) {
         for (auto az = 0; az < _azi_len; az++) {
             ir_path = in_dir + "azi_" + std::to_string(azi_locs[az]) + ",0_ele_" + std::to_string(ele_locs[el]) + ",0.wav";
@@ -58,7 +59,7 @@ void HRIR_set::calc_avg_mag(ComplexArray1D &avg_mag_l, ComplexArray1D &avg_mag_r
         }
     }
 
-    // average and root
+    // average and root, giving us "average" mag response (MR)
     for (auto i = 0; i < _N; i++) {
         avg_mag_l[i] = std::sqrt((avg_mag_l[i].real() / _total));
         avg_mag_r[i] = std::sqrt((avg_mag_r[i].real() / _total));

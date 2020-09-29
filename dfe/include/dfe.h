@@ -2,12 +2,15 @@
 
 #define __USE_SQUARE_BRACKETS_FOR_ELEMENT_ACCESS_OPERATOR
 
+#define USE_PYTHON // comment this out to remove Python/matplotlib-cpp dependencies
+
 #include <iostream>
 #include <vector>
 #include <cmath>
 #include <algorithm>
 #include <memory>
 #include <filesystem>
+#include <string>
 
 // Python-style print https://gist.github.com/fresky/5524148
 namespace __hidden__ {
@@ -28,14 +31,16 @@ namespace __hidden__ {
 #define print __hidden__::print(),
 
 // Python-style plotting
+#ifdef USE_PYTHON
 #include "../matplotlib-cpp/matplotlibcpp.h"
 namespace plt = matplotlibcpp;
+#endif // USE_PYTHON
 
 #include "AudioFile/AudioFile.h"
 #include "Simple-FFT/include/simple_fft/fft_settings.h"
 #include "Simple-FFT/include/simple_fft/fft.h"
 
-// required for simple FFT library use
+// required for Simple-FFT library use
 typedef std::vector<real_type> RealArray1D;
 typedef std::vector<complex_type> ComplexArray1D;
 
@@ -43,7 +48,7 @@ typedef std::vector<complex_type> ComplexArray1D;
 std::vector<int> generateRange(int a, int b, int c);
 std::vector<float> generateRange(float a, float b, float c);
 
-// convert butterfly MR to IR (input complex for type convenience only - assumed imag() = 0 everywhere)
+// convert butterfly MR to IR (input complex for type convenience only; assumed imag() = 0 everywhere)
 RealArray1D mr2ir(ComplexArray1D &mr, size_t Nfft);
 
 // in-place hamming windowing (adapted from https://www.phon.ucl.ac.uk/courses/spsci/dsp/window.html)
@@ -53,16 +58,12 @@ void Hamming(ComplexArray1D& iwv);
 ComplexArray1D vectorMultiplication(ComplexArray1D &v1, ComplexArray1D &v2);
 
 // Routine peforms linear convolution by straight forward calculation - written by Clay S. Turner
-// inputs:
-//  X  array of data comprising vector #1
-//  Y  array of data comprising vector #2
-//  Z  pointer to place to save resulting data - needs to be len+leny - 1 long
-//  lenx  # of items in vector 1
-//  leny  # of items in vector 2
 void LinearConvolution(double X[], double Y[], double Z[], int lenx, int leny);
 
-// compare MRs of input, inverse and combo
+// compare MRs of input, inverse and combo via matplotlib-style plot output
+#ifdef USE_PYTHON
 void plot_dfe_mr(ComplexArray1D& avg_mr, ComplexArray1D inv_mr, ComplexArray1D combo);
+#endif // USE_PYTHON
 
 // simple interpolation (adapted from https://stackoverflow.com/questions/9394867/c-implementation-of-matlab-interp1-function-linear-interpolation)
 std::vector<float> interp1(std::vector<float>& x, std::vector<float>& y, std::vector<float>& x_new);
@@ -88,7 +89,7 @@ public:
     // loop through sampled IRs, compute power spec and accumulate - then average and root
     void calc_avg_mag(ComplexArray1D &acc_pow_l, ComplexArray1D &acc_pow_r);
 
-    // apply FIR filter to entire HRIR dir (in stereo) and save to disk
+    // apply FIR filter to entire HRIR dir and save to disk
     void apply_fir(std::string out_dir, RealArray1D& ir_l, RealArray1D& ir_r);
 
 private:
@@ -111,10 +112,10 @@ public:
     // regularisation with 1/3 oct interpolated transient edges
     void reg();
 
-    // octave smoothing
+    // octave smoothing (TODO)
     void cmplxsmooth(ComplexArray1D H);
 
-    // calculate inverse filter (returns inverse MR for debugging)
+    // calculate inverse filter (returns inverse MR for plotting)
     ComplexArray1D calc_inverse(RealArray1D& ir, RealArray1D& inv_ir);
 
 private:

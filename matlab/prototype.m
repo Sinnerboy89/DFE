@@ -1,11 +1,11 @@
 clear all;
 
-N = 256; % expected length of HRIR (which we'll make = FFT size)
-azimuth_locations = (0:10:350);
-elevation_locations = (-75:15:90);
-hrir_dir = 'C:\projects\DFE\D1_HRIR_WAV\';
+N = 256; % expected length of HRIR (which we'll make FFT size for convenience)
+azimuth_locations = (0:10:350); % example regular sampling across azimuth (degrees)
+elevation_locations = (-75:15:90); % example regular sampling across elevation (degrees)
+hrir_dir = 'C:\projects\DFE\D1_HRIR_WAV\'; % location of HRIR set
 
-% load hrirs, calculate power specs and accumulate
+% load hrirs, calculate power spectra and accumulate
 addpath(hrir_dir);
 acc_pow = zeros(N, 1);
 total = length(azimuth_locations)*length(elevation_locations);
@@ -18,14 +18,14 @@ for az = 1:length(azimuth_locations)
     end
 end
 
-% average and root (effectly making power spec --> mag response) 
+% average and root (effectively making acc power spec --> average mag response) 
 avg_mag = sqrt(acc_pow / total);
 
 % plot
 F = linspace(0, Fs - (Fs/N), N);
 semilogx(F(1:N/2), 10*log10(avg_mag(1:N/2)));
 
-% convert avg mag response to IR
+% convert avg mag response to IR (zero phase)
 avg_ir = circshift(real(ifft(avg_mag)), N/2);
 
 % separate channels
@@ -34,7 +34,7 @@ avg_ir_l = avg_ir(:,1);
 % normalise?
 % / max(abs(avg_ir(:,1)));
 
-% derive inverse FIR from IR
+% derive inverse FIR from IR (setting phase aside for now - inverse may be unstable though)
 inverse_l = invFIR('linphase', avg_ir_l, N, 3, N, [20 20000], [15 20], 1, Fs);
 
 % QC: combine DFIR with inverse and check FR is "flat"

@@ -23,6 +23,7 @@ Kirkeby_Inverter::Kirkeby_Inverter(int Fs, size_t Nfft, int Noct, size_t L, int 
 
 void Kirkeby_Inverter::reg() {
 
+    // regularisation portion of invFIR
     std::vector<float> orig_x({ 0.0f, _f1e, (float)_f1, (float)_f2, _f2e, _freq.back() });
     std::vector<float> orig_y({ _reg_out, _reg_out, _reg_in, _reg_in, _reg_out, _reg_out });
     std::vector<float> interp;
@@ -114,6 +115,7 @@ ComplexArray1D Kirkeby_Inverter::calc_inverse(RealArray1D& ir, RealArray1D& inv_
     const char* error = nullptr;
     ComplexArray1D inv_cplx(_Nfft), inv_mr(_Nfft);
 
+    // input IR -> MR
     auto status = simple_fft::FFT(ir, inv_cplx, _Nfft, error);
     for (auto i = 0; i < _Nfft; i++) {
         inv_cplx[i] = std::abs(inv_cplx[i]);
@@ -127,13 +129,13 @@ ComplexArray1D Kirkeby_Inverter::calc_inverse(RealArray1D& ir, RealArray1D& inv_
         inv_cplx[i] = (inv_cplx[i].real() / (std::pow(inv_cplx[i].real(), 2.0f)) + (std::conj(_B[i]) * _B[i]));
     }
 
-    // calculate MR and copy for debugging return
+    // calculate MR of inverse filter and copy for debugging return
     simple_fft::copy_array::copyArray(inv_cplx, inv_mr, _Nfft);
     for (auto i = 0; i < _Nfft; i++) {
         inv_mr[i] = std::abs(inv_mr[i]);
     }
 
-    // back to time domain
+    // back to real time domain (setting phase aside for now, minimum-phase conversion TODO)
     status = simple_fft::IFFT(inv_cplx, _Nfft, error);
     std::rotate(inv_cplx.begin(), inv_cplx.begin() + (_Nfft / 2), inv_cplx.end());
     for (auto i = 0; i < _Nfft; i++) {
