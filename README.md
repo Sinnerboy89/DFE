@@ -45,8 +45,5 @@ matplotlib-cpp: https://github.com/lava/matplotlib-cpp "Welcome to matplotlib-cp
 * Determine FFT size and IR length from input directory
 * Consider disk I/O vs. heap allocation tradeoffs if performance becomes a priority
 
-## Queries
-* I can understand for demonstration/exercise purposes, but apart from that, why C++? This feels like a server-client type of application, with no real-time constraints or deadlines, no CPU budgets - if placed within an HRTF post-processing chain, likely scenario is within a device where the measurements occur, which will always be the timing bottleneck. Python, Java, .NET, even MATLAB feels more appropriate.
-
 ## References
 McKenzie, Thomas, Damian Murphy, and Gavin Kearney. "Diffuse-field equalisation of first-order Ambisonics." Proceedings of the 20th International Conference on Digital Audio Effects (DAFx), Edinburgh, UK. 2017.
