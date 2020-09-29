@@ -25,9 +25,15 @@ int main(int argc, char* argv[])
     Kirkeby_Inverter kirk_inv_r(44100, N, 3, N, 20, 20000, 15, 20);
     kirk_inv_l.reg();
     kirk_inv_r.reg();
-    kirk_inv_l.calc_inverse(avg_ir_l, inv_ir_l);
-    kirk_inv_l.calc_inverse(avg_ir_r, inv_ir_r);
+    ComplexArray1D inv_mag_l = kirk_inv_l.calc_inverse(avg_ir_l, inv_ir_l);
+    ComplexArray1D inv_mag_r = kirk_inv_l.calc_inverse(avg_ir_r, inv_ir_r);
 
-    // apply inverse IR across HRIR set
+    // combine FRs to check for "flat" response
+    ComplexArray1D combo = vectorMultiplication(avg_mag_l, inv_mag_l);
+
+    // plot
+    plot_dfe_mr(avg_mag_l, inv_mag_l, combo);
+
+    // apply inverse filter across HRIR set
     hrir_set.apply_fir(argv[2], inv_ir_l, inv_ir_r);
 }

@@ -1,9 +1,0 @@
-[submodule "dfe/include/AudioFile"]
-	path = dfe/include/AudioFile
-	url = https://github.com/adamstark/AudioFile.git
-[submodule "dfe/include/Simple-FFT"]
-	path = dfe/include/Simple-FFT
-	url = https://github.com/d1vanov/Simple-FFT.git
-[submodule "dfe/matplotlib-cpp"]
-	path = dfe/matplotlib-cpp
-	url = https://github.com/lava/matplotlib-cpp.git

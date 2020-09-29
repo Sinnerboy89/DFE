@@ -23,9 +23,6 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CubicSpline\CubicSpline\CubicSpline.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\HRIR_set.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -23,13 +23,14 @@ std::vector<float> generateRange(float a, float b, float c) {
 RealArray1D mr2ir(ComplexArray1D &mr, size_t Nfft) {
     
     RealArray1D ir(Nfft);
+    ComplexArray1D ir_cplx(Nfft);
     bool status;
     const char* error = nullptr;
 
-    status = simple_fft::IFFT(mr, mr, Nfft, error);
+    status = simple_fft::IFFT(mr, ir_cplx, Nfft, error);
 
     for (auto i = 0; i < Nfft; i++) {
-        ir[i] = mr[i].real();
+        ir[i] = ir_cplx[i].real();
     }
 
     // circshift in MATLAB speak
@@ -69,5 +70,86 @@ void LinearConvolution(double X[], double Y[], double Z[], int lenx, int leny)
         *zptr = s;
         zptr++;
     }
+}
+
+
+ComplexArray1D vectorMultiplication(ComplexArray1D &v1, ComplexArray1D &v2)
+{
+    ComplexArray1D result;
+    std::transform(v1.begin(), v1.end(), v2.begin(), 
+                   std::back_inserter(result), std::multiplies<complex_type>());
+    return result;
+}
+
+void plot_dfe_mr(ComplexArray1D& avg_mr, ComplexArray1D inv_mr, ComplexArray1D combo) {
+
+    float bin = 22050.0f / 128.0f;
+    std::vector<float> freq = generateRange(0.0f, bin, 22050.0f - bin);
+    std::vector<float> avg_mr_real, inv_mr_real, combo_real;
+    for (auto i = 0; i < 128; i++) {
+        avg_mr_real.push_back(avg_mr[i].real());
+        inv_mr_real.push_back(inv_mr[i].real());
+        combo_real.push_back(combo[i].real());
+    }
+
+    plt::figure_size(1200, 780);
+    plt::named_plot("avg", freq, avg_mr_real);
+    plt::named_plot("inverse", freq, inv_mr_real);
+    plt::named_plot("combo", freq, combo_real);
+    plt::title("DFE");
+    plt::legend();
+    plt::save("./plot_dfe.png");
+}
+
+static int findNearestNeighbourIndex(float value, std::vector<float>& x)
+{
+    float dist = FLT_MAX;
+    int idx = -1;
+    for (int i = 0; i < x.size(); ++i) {
+        float newDist = value - x[i];
+        if (newDist > 0 && newDist < dist) {
+            dist = newDist;
+            idx = i;
+        }
+    }
+
+    return idx;
+}
+
+vector<float> interp1(vector<float>& x, vector<float>& y, vector<float>& x_new)
+{
+    vector<float> y_new;
+
+    std::vector<float> dx, dy, slope, intercept;
+    dx.reserve(x.size());
+    dy.reserve(x.size());
+    slope.reserve(x.size());
+    intercept.reserve(x.size());
+    for (int i = 0; i < x.size(); ++i) {
+        if (i < x.size() - 1)
+        {
+            dx.push_back(x[i + 1] - x[i]);
+            dy.push_back(y[i + 1] - y[i]);
+            slope.push_back(dy[i] / dx[i]);
+            intercept.push_back(y[i] - x[i] * slope[i]);
+        }
+        else
+        {
+            dx.push_back(dx[i - 1]);
+            dy.push_back(dy[i - 1]);
+            slope.push_back(slope[i - 1]);
+            intercept.push_back(intercept[i - 1]);
+        }
+    }
+
+    for (int i = 0; i < x_new.size(); ++i)
+    {
+        int idx = std::max(0, findNearestNeighbourIndex(x_new[i], x));
+        y_new.push_back(slope[idx] * x_new[i] + intercept[idx]);
+
+    }
+
+    return y_new;
+
 }
 

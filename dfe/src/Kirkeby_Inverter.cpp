@@ -23,14 +23,13 @@ Kirkeby_Inverter::Kirkeby_Inverter(int Fs, size_t Nfft, int Noct, size_t L, int 
 
 void Kirkeby_Inverter::reg() {
 
-    float interp_x[] = { 0.0f, _f1e, (float)_f1, (float)_f2, _f2e, _freq.back() };
-    float interp_y[] = { _reg_out, _reg_out, _reg_in, _reg_in, _reg_out, _reg_out };
-    float* freq_ptr = &_freq[0];
-    CubicSpline interpolator;
-    interpolator.Initialize(interp_x, interp_y, 6);
+    std::vector<float> orig_x({ 0.0f, _f1e, (float)_f1, (float)_f2, _f2e, _freq.back() });
+    std::vector<float> orig_y({ _reg_out, _reg_out, _reg_in, _reg_in, _reg_out, _reg_out });
+    std::vector<float> interp;
+    interp = interp1(orig_x, orig_y, _freq);
     _B.resize(_freq.size());
     for (auto i = 0; i < _B.size(); i++) {
-        _B[i] = interpolator.Interpolate(_freq[i]);
+        _B[i] = interp[i];
         _B[i] = std::pow(10.0f, -_B[i].real() / 20.0f); // from dB to linear
     }
     ComplexArray1D B_copy(_Nfft / 2);
@@ -110,11 +109,11 @@ void Kirkeby_Inverter::cmplxsmooth(ComplexArray1D H) {
 
 }
 
-void Kirkeby_Inverter::calc_inverse(RealArray1D& ir, RealArray1D& inv_ir) {
+ComplexArray1D Kirkeby_Inverter::calc_inverse(RealArray1D& ir, RealArray1D& inv_ir) {
 
     const char* error = nullptr;
+    ComplexArray1D inv_cplx(_Nfft), inv_mr(_Nfft);
 
-    ComplexArray1D inv_cplx(_Nfft);
     auto status = simple_fft::FFT(ir, inv_cplx, _Nfft, error);
     for (auto i = 0; i < _Nfft; i++) {
         inv_cplx[i] = std::abs(inv_cplx[i]);
@@ -125,12 +124,21 @@ void Kirkeby_Inverter::calc_inverse(RealArray1D& ir, RealArray1D& inv_ir) {
 
     // calculate regulated spectral inverse
     for (auto i = 0; i < _Nfft; i++) {
-        inv_cplx[i] = std::conj(inv_cplx[i]) / ((std::conj(inv_cplx[i]) * inv_cplx[i]) + (std::conj(_B[i]) * _B[i]));
+        inv_cplx[i] = (inv_cplx[i].real() / (std::pow(inv_cplx[i].real(), 2.0f)) + (std::conj(_B[i]) * _B[i]));
     }
+
+    // calculate MR and copy for debugging return
+    simple_fft::copy_array::copyArray(inv_cplx, inv_mr, _Nfft);
+    for (auto i = 0; i < _Nfft; i++) {
+        inv_mr[i] = std::abs(inv_mr[i]);
+    }
+
+    // back to time domain
     status = simple_fft::IFFT(inv_cplx, _Nfft, error);
     std::rotate(inv_cplx.begin(), inv_cplx.begin() + (_Nfft / 2), inv_cplx.end());
-
     for (auto i = 0; i < _Nfft; i++) {
         inv_ir[i] = inv_cplx[i].real();
     }
+
+    return inv_mr;
 }

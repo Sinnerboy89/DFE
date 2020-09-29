@@ -27,10 +27,13 @@ namespace __hidden__ {
 }
 #define print __hidden__::print(),
 
+// Python-style plotting
+#include "../matplotlib-cpp/matplotlibcpp.h"
+namespace plt = matplotlibcpp;
+
 #include "AudioFile/AudioFile.h"
 #include "Simple-FFT/include/simple_fft/fft_settings.h"
 #include "Simple-FFT/include/simple_fft/fft.h"
-#include "../CubicSpline/CubicSpline/CubicSpline.h"
 
 // required for simple FFT library use
 typedef std::vector<real_type> RealArray1D;
@@ -46,6 +49,9 @@ RealArray1D mr2ir(ComplexArray1D &mr, size_t Nfft);
 // in-place hamming windowing (adapted from https://www.phon.ucl.ac.uk/courses/spsci/dsp/window.html)
 void Hamming(ComplexArray1D& iwv);
 
+// element-wise vector multiply (adapted from https://stackoverflow.com/questions/42278819/element-wise-vector-multiplication-c-code-not-working)
+ComplexArray1D vectorMultiplication(ComplexArray1D &v1, ComplexArray1D &v2);
+
 // Routine peforms linear convolution by straight forward calculation - written by Clay S. Turner
 // inputs:
 //  X  array of data comprising vector #1
@@ -54,6 +60,12 @@ void Hamming(ComplexArray1D& iwv);
 //  lenx  # of items in vector 1
 //  leny  # of items in vector 2
 void LinearConvolution(double X[], double Y[], double Z[], int lenx, int leny);
+
+// compare MRs of input, inverse and combo
+void plot_dfe_mr(ComplexArray1D& avg_mr, ComplexArray1D inv_mr, ComplexArray1D combo);
+
+// simple interpolation (adapted from https://stackoverflow.com/questions/9394867/c-implementation-of-matlab-interp1-function-linear-interpolation)
+vector<float> interp1(vector<float>& x, vector<float>& y, vector<float>& x_new);
 
 // assumes data comes from SADIE II, with their naming convention
 class HRIR_set {
@@ -87,7 +99,7 @@ private:
 
 };
 
-// port of MATLAB's infamous Kirkeby regularised FIR inversion function https://uk.mathworks.com/matlabcentral/fileexchange/19294-inverse-fir-filter
+// port of MATLAB's infamous Kirkeby regularised FIR inversion function (https://uk.mathworks.com/matlabcentral/fileexchange/19294-inverse-fir-filter)
 class Kirkeby_Inverter {
 
 public:
@@ -102,8 +114,8 @@ public:
     // octave smoothing
     void cmplxsmooth(ComplexArray1D H);
 
-    // calculate inverse filter
-    void calc_inverse(RealArray1D& ir, RealArray1D& inv_ir);
+    // calculate inverse filter (returns inverse MR for debugging)
+    ComplexArray1D calc_inverse(RealArray1D& ir, RealArray1D& inv_ir);
 
 private:
 
