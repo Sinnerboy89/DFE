@@ -1,0 +1,9 @@
+C:/projects/DFE/dfe/matplotlib-cpp/examples/build/CMakeFiles/minimal.dir
+C:/projects/DFE/dfe/matplotlib-cpp/examples/build/CMakeFiles/nonblock.dir
+C:/projects/DFE/dfe/matplotlib-cpp/examples/build/CMakeFiles/animation.dir
+C:/projects/DFE/dfe/matplotlib-cpp/examples/build/CMakeFiles/basic.dir
+C:/projects/DFE/dfe/matplotlib-cpp/examples/build/CMakeFiles/bar.dir
+C:/projects/DFE/dfe/matplotlib-cpp/examples/build/CMakeFiles/modern.dir
+C:/projects/DFE/dfe/matplotlib-cpp/examples/build/CMakeFiles/xkcd.dir
+C:/projects/DFE/dfe/matplotlib-cpp/examples/build/CMakeFiles/ALL_BUILD.dir
+C:/projects/DFE/dfe/matplotlib-cpp/examples/build/CMakeFiles/ZERO_CHECK.dir

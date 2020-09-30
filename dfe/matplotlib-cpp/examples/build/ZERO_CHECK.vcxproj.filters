@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\projects\DFE\dfe\matplotlib-cpp\examples\build\CMakeFiles\63998471c6c5a4ff61eab197cc1d20eb\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{CD2BAC28-1822-3AFB-AC2B-27864C919858}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

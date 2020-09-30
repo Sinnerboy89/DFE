@@ -1,0 +1,10 @@
+^C:\PROJECTS\DFE\DFE\MATPLOTLIB-CPP\EXAMPLES\BUILD\CMAKEFILES\63998471C6C5A4FF61EAB197CC1D20EB\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/projects/DFE/dfe/matplotlib-cpp/contrib -BC:/projects/DFE/dfe/matplotlib-cpp/examples/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/projects/DFE/dfe/matplotlib-cpp/examples/build/MatplotlibCPP_Test.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
